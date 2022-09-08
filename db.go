@@ -31,6 +31,9 @@ func (m *Money) Scan(src interface{}) error {
 		if err := amount.Scan(x); err != nil {
 			return fmt.Errorf("scanning %#v into an Amount: %v", x, err)
 		}
+		if m.currency != nil {
+			currency = m.currency
+		}
 	default:
 		return fmt.Errorf("don't know how to scan %T into Money", src)
 	}
