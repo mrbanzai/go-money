@@ -7,6 +7,17 @@ import (
 	"strings"
 )
 
+var (
+	DatabaseValueAmountOnly = false
+)
+
+func (m Money) Value() (driver.Value, error) {
+	if DatabaseValueAmountOnly {
+		return m.amount.val, nil
+	}
+	return fmt.Sprintf("%s %d", m.currency.Code, m.amount.val), nil
+}
+
 // Scan implements sql.Scanner to deserialize a Money instance from a "currency_code amount" space-separated pair or an INTEGER column
 // (with the currency already defaulted)
 func (m *Money) Scan(src interface{}) error {
